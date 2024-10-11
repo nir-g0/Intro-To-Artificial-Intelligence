@@ -22,7 +22,8 @@ class AStarGraph(GraphProblem):
         return euclidean_distance
 
 def f(input):
-   return input['path_cost'] + input['heuristic_cost']
+   func_cost = input['path_cost'] + input['heuristic_cost']
+   return func_cost
 
 def astar_search(problem, h=None):
     if not h:
@@ -34,10 +35,11 @@ def astar_search(problem, h=None):
     fringe.append({'path_cost':0, 'heuristic_cost':0, 'node':node})
     while fringe:
        current = fringe.pop()
-       for child_node in current['node'].expand(problem):    
-        fringe.append({'path_cost':child_node.path_cost, 'heuristic_cost':h(child_node), 'node':child_node})
        if problem.goal_test(current['node'].state):
         return current['node']
+       print(f"{current['node'].state} : {f(current)}")
+       for child_node in current['node'].expand(problem):    
+        fringe.append({'path_cost':child_node.path_cost, 'heuristic_cost':h(child_node), 'node':child_node})
     return None
     """A* search is best-first (you may use priority queue) graph search with f(n) = g(n)+h(n).
     You need to specify the h function when you call astar_search, (ALREADY ADDED in TEST CASE),
